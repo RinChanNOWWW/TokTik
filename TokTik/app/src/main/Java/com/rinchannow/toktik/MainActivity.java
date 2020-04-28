@@ -1,23 +1,33 @@
 package com.rinchannow.toktik;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.POST;
 
 
 public class MainActivity extends AppCompatActivity {
     SmartRefreshLayout refreshLayout;
     ViewPager2 viewPager2;
     MainPageAdapter adapter;
-    List<String> list;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,32 +35,43 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         refreshLayout = findViewById(R.id.refresh_layout);
         viewPager2 = findViewById(R.id.view_page2);
-        refreshLayout.setEnableLoadMore(true);
+//        refreshLayout.setEnableLoadMore(true);
         adapter = new MainPageAdapter();
         viewPager2.setAdapter(adapter);
-
-        list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add(i + "");
-        }
-        adapter.setList(list);
-        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        // 从 API 获取视频信息
+        getData();
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                refreshLayout.finishRefresh(1000);
+                Toast.makeText(getApplicationContext(), "Refresh", Toast.LENGTH_SHORT).show();
             }
+        });
 
+
+    }
+
+    private void getData() {
+        Log.d("network", "Get Request");
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://beiyou.bytedance.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        APIService apiService = retrofit.create(APIService.class);
+        apiService.getVideos().enqueue(new Callback<List<VideoResponse.VideoData>>() {
             @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                if (position == list.size() - 1) {
-                    Toast.makeText(getApplicationContext(), position + "触发 loadmore", Toast.LENGTH_SHORT).show();
+            public void onResponse(Call<List<VideoResponse.VideoData>> call, Response<List<VideoResponse.VideoData>> response) {
+                if (response.body() != null) {
+                    Log.d("network", "Get Response");
+                    List<VideoResponse.VideoData> list = response.body();
+                    adapter.setList(list);
                 }
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
-                super.onPageScrollStateChanged(state);
+            public void onFailure(Call<List<VideoResponse.VideoData>> call, Throwable t) {
+                Log.d("network", t.getMessage());
             }
         });
     }

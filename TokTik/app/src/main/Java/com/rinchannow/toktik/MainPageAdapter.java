@@ -14,9 +14,9 @@ import java.util.List;
 public class MainPageAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     // TODO 换成视频内容
-    private List<String> list = new ArrayList<>();
+    private List<VideoResponse.VideoData> list = new ArrayList<>();
 
-    public void setList(List<String> list) {
+    public void setList(List<VideoResponse.VideoData> list) {
         this.list = list;
         notifyDataSetChanged();
     }
@@ -31,7 +31,15 @@ public class MainPageAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bindData(list.get(position) + "");
+        VideoResponse.VideoData data = list.get(position);
+        String text =
+                "id: " + data.id + "\n" +
+                "feed url: " + data.feedUrl + "\n" +
+                "nickname: " + data.nickname + "\n" +
+                "description: " + data.description + "\n" +
+                "like count: " + data.likeCount + "\n" +
+                "avatar url:" + data.avatarUrl;
+        holder.bindData(text);
     }
 
     @Override
