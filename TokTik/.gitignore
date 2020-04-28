@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 *.iml
 .gradle
 /local.properties
@@ -13,6 +12,3 @@
 /captures
 .externalNativeBuild
 .cxx
-=======
-/build
->>>>>>> parent of 86a009b... Revert "初始化"
