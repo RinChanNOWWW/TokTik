@@ -56,7 +56,7 @@ class ViewHolder extends RecyclerView.ViewHolder {
 
     public ViewHolder(@NonNull View itemView) {
         super(itemView);
-        textView = itemView.findViewById(R.id.num);
+        textView = itemView.findViewById(R.id.video_info);
     }
 
     void bindData(String s) {
