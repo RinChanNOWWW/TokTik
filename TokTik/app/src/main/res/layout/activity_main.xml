@@ -1,39 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/header"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/video_list"
         android:layout_width="match_parent"
-        android:layout_height="45dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:fontFamily="sans-serif"
-            android:text="@string/app_name"
-            android:textColor="@color/colorBackground"
-            android:textSize="18sp" />
-    </RelativeLayout>
-
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/view_page2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-        </androidx.viewpager2.widget.ViewPager2>
-
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/item"/>
 
 </LinearLayout>
