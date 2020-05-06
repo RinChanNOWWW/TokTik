@@ -2,22 +2,28 @@ package com.rinchannow.toktik.player;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.MediaController;
 
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+
+import com.rinchannow.toktik.controller.IMediaController;
 
 import java.io.IOException;
 
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
-public class VideoPlayerIJK extends FrameLayout {
+public class VideoPlayerIJK extends FrameLayout implements MediaController.MediaPlayerControl, MediaPlayer.OnBufferingUpdateListener {
     /**
      * 由ijkplayer提供，用于播放视频，需要给他传入一个surfaceView
      */
@@ -34,6 +40,8 @@ public class VideoPlayerIJK extends FrameLayout {
 
     private VideoPlayerListener listener;
     private Context mContext;
+    private IMediaController mMediaController;
+    private int bufferPercentage = 0;
 
     public VideoPlayerIJK(@NonNull Context context) {
         super(context);
@@ -88,6 +96,11 @@ public class VideoPlayerIJK extends FrameLayout {
         surfaceView.setLayoutParams(layoutParams);
         this.addView(surfaceView);
         hasCreateSurfaceView = true;
+    }
+
+    @Override
+    public void onBufferingUpdate(MediaPlayer mp, int percent) {
+        bufferPercentage = percent;
     }
 
     /**
@@ -157,7 +170,7 @@ public class VideoPlayerIJK extends FrameLayout {
             mMediaPlayer.setOnPreparedListener(listener);
             mMediaPlayer.setOnInfoListener(listener);
             mMediaPlayer.setOnSeekCompleteListener(listener);
-            mMediaPlayer.setOnBufferingUpdateListener(listener);
+            mMediaPlayer.setOnBufferingUpdateListener(mBufferingUpdateListener);
             mMediaPlayer.setOnErrorListener(listener);
         }
     }
@@ -170,9 +183,34 @@ public class VideoPlayerIJK extends FrameLayout {
         }
     }
 
+    private IMediaPlayer.OnBufferingUpdateListener mBufferingUpdateListener =
+            new IMediaPlayer.OnBufferingUpdateListener() {
+                public void onBufferingUpdate(IMediaPlayer mp, int percent) {
+                    bufferPercentage = percent;
+                }
+            };
+
     /**
      * -------======--------- 下面封装了一下控制视频的方法
      */
+
+    public void setMediaController(IMediaController controller) {
+        if (mMediaController != null) {
+            mMediaController.hide();
+        }
+        mMediaController = controller;
+        attachMediaController();
+    }
+
+    private void attachMediaController() {
+        if (mMediaPlayer != null && mMediaController != null) {
+            mMediaController.setMediaPlayer(this);
+            View anchorView = this.getParent() instanceof View ?
+                    (View) this.getParent() : this;
+            mMediaController.setAnchorView(anchorView);
+            mMediaController.setEnabled(true);
+        }
+    }
 
     public void start() {
         if (mMediaPlayer != null) {
@@ -208,23 +246,27 @@ public class VideoPlayerIJK extends FrameLayout {
     }
 
 
-    public long getDuration() {
+    @Override
+    public int getDuration() {
         if (mMediaPlayer != null) {
-            return mMediaPlayer.getDuration();
+            return (int) mMediaPlayer.getDuration();
         } else {
             return 0;
         }
     }
 
 
-    public long getCurrentPosition() {
+    @Override
+    public int getCurrentPosition() {
         if (mMediaPlayer != null) {
-            return mMediaPlayer.getCurrentPosition();
+            return (int) mMediaPlayer.getCurrentPosition();
         } else {
             return 0;
         }
     }
 
+
+    @Override
     public boolean isPlaying() {
         if (mMediaPlayer != null) {
             return mMediaPlayer.isPlaying();
@@ -232,7 +274,38 @@ public class VideoPlayerIJK extends FrameLayout {
         return false;
     }
 
-    public void seekTo(long l) {
+    @Override
+    public int getBufferPercentage() {
+        return bufferPercentage;
+    }
+
+//    @Override
+//    public int getBufferPercentage() {
+//        return mMediaPlayer.;
+//    }
+
+    @Override
+    public boolean canPause() {
+        return true;
+    }
+
+    @Override
+    public boolean canSeekBackward() {
+        return true;
+    }
+
+    @Override
+    public boolean canSeekForward() {
+        return true;
+    }
+
+    @Override
+    public int getAudioSessionId() {
+        return 0;
+    }
+
+    @Override
+    public void seekTo(int l) {
         if (mMediaPlayer != null) {
             mMediaPlayer.seekTo(l);
         }
