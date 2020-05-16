@@ -54,11 +54,8 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.VideoI
         holder.topic.setText(data.nickname);
         holder.description.setText(data.description);
         Log.d("yuanziqi", data.feedUrl);
-//        Glide.with(holder.itemView).setDefaultRequestOptions(new RequestOptions().frame(1000)
-//                .centerCrop()
-//                .placeholder(R.drawable.icon_progress_bar)
-//                .error(R.drawable.icon_failure)
-//        ).load(data.feedUrl).into(holder.pictureCover);
+
+        holder.upvoteCount.setText(data.likeCount <= 100000 ? String.valueOf(data.likeCount) : "100000+");
 
         loadCover(holder.pictureCover, data.feedUrl, holder.itemView.getContext());
     }
@@ -70,8 +67,8 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.VideoI
 
     public class VideoInfoItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        // TODO 之后需要制作成视频预览，这里只是先用来看效果
         private TextView topic;
+        private TextView upvoteCount;
         private ImageView pictureCover;
         private TextView description;
 
@@ -80,6 +77,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.VideoI
 
             topic = itemView.findViewById(R.id.topic);
             pictureCover = itemView.findViewById(R.id.avator);
+            upvoteCount = itemView.findViewById(R.id.upvote_count);
             description = itemView.findViewById(R.id.description);
 
             itemView.setOnClickListener(this);
