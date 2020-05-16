@@ -1,11 +1,8 @@
 package com.rinchannow.toktik;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,8 +86,6 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.VideoI
                 mOnClickListener.onListItemClick(clickedPosition);
             }
         }
-
-
     }
 
     private static void loadCover(ImageView imageView, String url, Context context) {
@@ -101,8 +95,6 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.VideoI
                         .placeholder(R.drawable.icon_progress_bar)
                         .error(R.drawable.icon_failure)
                 ).load(url).into(imageView);
-//                .load(url)
-//                .into(imageView);
     }
 
     public interface ListItemClickListener {
