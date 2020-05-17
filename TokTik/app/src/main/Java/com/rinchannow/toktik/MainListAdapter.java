@@ -72,7 +72,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.VideoI
             super(itemView);
 
             topic = itemView.findViewById(R.id.topic);
-            pictureCover = itemView.findViewById(R.id.avator);
+            pictureCover = itemView.findViewById(R.id.cover);
             upvoteCount = itemView.findViewById(R.id.upvote_count);
             description = itemView.findViewById(R.id.description);
 

@@ -12,7 +12,7 @@
     android:paddingBottom="6dp"
     >
     <com.shehuan.niv.NiceImageView
-        android:id="@+id/avator"
+        android:id="@+id/cover"
         android:layout_width="120dp"
         android:layout_height="100dp"
         android:scaleType="centerCrop"
@@ -23,27 +23,26 @@
     />
 
     <RelativeLayout
-        android:layout_width="264dp"
-        android:layout_height="80dp"
+        android:layout_width="248dp"
+        android:layout_height="95dp"
         android:layout_marginStart="9dp"
         android:layout_marginLeft="9dp"
         android:layout_marginEnd="9dp"
         android:layout_marginRight="9dp"
-        android:layout_toEndOf="@+id/avator">
+        android:layout_toEndOf="@+id/cover">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/topic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:text="Name of the video"
-                android:textSize="16sp"
                 android:textColor="#000000"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -52,37 +51,36 @@
                 android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:layout_marginLeft="6dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginRight="6dp"
-                app:layout_constraintTop_toBottomOf="@+id/topic"
-                android:textSize="12sp"
-                android:textAlignment="center"
                 android:text="This is the specific introduction of the video"
-                />
+                android:textAlignment="center"
+                android:textSize="12sp"
+                app:layout_constraintTop_toBottomOf="@+id/topic" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_alignParentEnd="true"
-            >
+            android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/upvote_count"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="1.5dp"
-                android:textSize="12sp"
                 android:text="一万+"
                 android:textAlignment="center"
-                android:layout_gravity="center"
-                />
+                android:textSize="12sp" />
+
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/good"
-                android:contentDescription="upvote">
-            </ImageView>
+                android:contentDescription="upvote"
+                android:src="@drawable/good"></ImageView>
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>
