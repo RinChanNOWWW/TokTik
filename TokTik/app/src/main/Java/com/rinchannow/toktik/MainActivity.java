@@ -3,12 +3,18 @@ package com.rinchannow.toktik;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.List;
 
@@ -24,11 +30,14 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
     private MainListAdapter mAdapter;
     private RecyclerView mListView;
     private LinearLayoutManager layoutManager;
+    private SmartRefreshLayout refreshLayout;
 
     @Override
     public void onCreate(@Nullable Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_main);
+
+        refreshLayout = findViewById(R.id.refresh_layout);
         mListView = findViewById(R.id.video_list);
         layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -41,6 +50,17 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                refreshLayout.finishRefresh(1000);
+                Toast.makeText(getApplicationContext(), "Refresh", Toast.LENGTH_SHORT).show();
+                getVideoData();
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
         mAdapter = new MainListAdapter(this);
         mListView.setAdapter(mAdapter);
     }
