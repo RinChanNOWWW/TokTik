@@ -2,12 +2,14 @@ package com.rinchannow.toktik;
 
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -21,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.RequestOptions;
 import com.rinchannow.toktik.animator.Love;
 import com.rinchannow.toktik.controller.AndroidMediaController;
@@ -33,15 +36,19 @@ import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 
 public class VideoActivity extends AppCompatActivity {
+
     private VideoPlayerIJK ijkPlayer;
     private AndroidMediaController mediaController;
     private Aside aside = new Aside(this);
     private Introduction introduction = new Introduction();
     private Love loveAnimator;
     private GestureDetector myGestureDetector;
-//    private ImageView share;
 
-//    @SuppressLint("ClickableViewAccessibility")
+
+    // Download video.
+    private DownloadManager downloadManager;
+
+    //    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(@Nullable Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
@@ -59,8 +66,6 @@ public class VideoActivity extends AppCompatActivity {
         Integer upvoteCount = intent.getIntExtra("upvoteCount", 0);
         String avator = intent.getStringExtra("avator");
 
-
-
         aside.init();
         aside.share.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +76,37 @@ public class VideoActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "已复制视频链接到剪贴板", Toast.LENGTH_SHORT).show();
             }
         });
+        aside.downloadIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String serviceString = Context.DOWNLOAD_SERVICE;
+                downloadManager = (DownloadManager) getBaseContext().getSystemService(serviceString);
+                Uri uri = Uri.parse(url);
+                if (Environment.MEDIA_MOUNTED.equals(Environment
+                        .getExternalStorageState())) {
+                    DownloadManager.Request request = new DownloadManager.Request(uri);
+                    //通知栏的标题
+                    request.setTitle("视频下载");
+                    //显示通知栏的说明
+                    request.setDescription("");
+                    //下载到那个文件夹下，以及命名
+
+                    String downloadPath = topic + ".mp4";
+                    request.setDestinationInExternalPublicDir("Download", downloadPath);
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Long reference = downloadManager.enqueue(request);
+                        }
+                    }).start();
+
+                    Toast.makeText(getApplicationContext(), "下载视频 " + Environment.getExternalStorageDirectory().getPath() +
+                            "/Download/" + topic + ".mp4", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         aside.setAside(upvoteCount > 100000 ? "100000+" : String.valueOf(upvoteCount), avator);
 
         introduction.init();
@@ -91,6 +127,15 @@ public class VideoActivity extends AppCompatActivity {
         mediaController.setMediaPlayer(ijkPlayer);
 
         ijkPlayer.start();
+    }
+
+    /* Checks if external storage is available for read and write */
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
     }
 
 
@@ -154,7 +199,7 @@ public class VideoActivity extends AppCompatActivity {
 
         private ImageView share;
         private ImageView avatorImg;
-        private ImageView downloadImg;
+        private ImageView downloadIcon;
 
         private Context context;
 
@@ -169,7 +214,7 @@ public class VideoActivity extends AppCompatActivity {
             commentCount = findViewById(R.id.videoCommentCount);
             share = findViewById(R.id.shareIcon);
             avatorImg = findViewById(R.id.avator);
-            downloadImg = findViewById(R.id.downloadIcon);
+            downloadIcon = findViewById(R.id.downloadIcon);
 
         }
 
