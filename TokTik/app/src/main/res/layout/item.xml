@@ -12,7 +12,7 @@
     android:paddingBottom="6dp"
     >
     <com.shehuan.niv.NiceImageView
-        android:id="@+id/avator"
+        android:id="@+id/cover"
         android:layout_width="120dp"
         android:layout_height="100dp"
         android:scaleType="centerCrop"
@@ -29,7 +29,7 @@
         android:layout_marginLeft="9dp"
         android:layout_marginEnd="9dp"
         android:layout_marginRight="9dp"
-        android:layout_toEndOf="@+id/avator">
+        android:layout_toEndOf="@+id/cover">
 
         <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

@@ -1,18 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/linearLayout"
-    android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<!--    <VideoView-->
-<!--        android:id="@+id/videoView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content" />-->
     <com.rinchannow.toktik.player.VideoPlayerIJK
         android:id="@+id/ijkPlayer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent" />
 
+    <LinearLayout
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/videoTopic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Topic of the vidoe"
+            android:textSize="18dp"
+            android:layout_marginLeft="20dp"
+            android:textColor="#ffffff">
+        </TextView>
+        <TextView
+            android:id="@+id/videoDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:textColor="#ffffff"
+            android:text="THis is the description of the video"
+            android:textSize="14dp">
+        </TextView>
+
+    </LinearLayout>
+    <LinearLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/description"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="40dp"
+        android:orientation="vertical">
+
+        <com.shehuan.niv.NiceImageView
+            android:id="@+id/avator"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/avator"
+            app:is_circle="true" />
+
+        <ImageView
+            android:id="@+id/loveIcon"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/heart" />
+
+        <TextView
+            android:id="@+id/videoUpvoteCount"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-4dp"
+            android:text="100000+"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:textSize="8sp">
+
+        </TextView>
+
+        <ImageView
+            android:id="@+id/CommentIcon"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/comment" />
+
+        <TextView
+            android:id="@+id/videoCommentCount"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-4dp"
+            android:text="100000+"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:textSize="8sp">
+
+        </TextView>
+
+        <ImageView
+            android:id="@+id/shareIcon"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/share" />
+
+        <TextView
+            android:id="@+id/videoShareCount"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-4dp"
+            android:text="100000+"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:textSize="8sp">
+        </TextView>
+    </LinearLayout>
+</RelativeLayout>
