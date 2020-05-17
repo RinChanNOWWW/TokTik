@@ -39,7 +39,7 @@ public class VideoActivity extends AppCompatActivity {
     private Introduction introduction = new Introduction();
     private Love loveAnimator;
     private GestureDetector myGestureDetector;
-    private ImageView share;
+//    private ImageView share;
 
 //    @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -47,19 +47,10 @@ public class VideoActivity extends AppCompatActivity {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_video);
         ijkPlayer = findViewById(R.id.ijkPlayer);
-        share = findViewById(R.id.shareIcon);
 
         // add Animator
         loveAnimator = findViewById(R.id.lovelayout);
         myGestureDetector = new GestureDetector(this, new myOnGestureListener());
-
-        //可以捕获触摸屏幕发生的Event事件
-//        ijkPlayer.setOnTouchListener((v, event) -> {
-//            //使用GestureDetector转发MotionEvent对象给OnGestureListener
-//            Log.d("tap", "Catch tap event");
-//            myGestureDetector.onTouchEvent(event);
-//            return true;
-//        });
 
         Intent intent = getIntent();
         String url = intent.getStringExtra("feedUrl");
@@ -68,7 +59,10 @@ public class VideoActivity extends AppCompatActivity {
         Integer upvoteCount = intent.getIntExtra("upvoteCount", 0);
         String avator = intent.getStringExtra("avator");
 
-        share.setOnClickListener(new View.OnClickListener() {
+
+
+        aside.init();
+        aside.share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -77,12 +71,6 @@ public class VideoActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "已复制视频链接到剪贴板", Toast.LENGTH_SHORT).show();
             }
         });
-//        Log.d("video", "Get " + url);
-//        Log.d("video", "Get " + topic);
-//        Log.d("video", "Get " + description);
-//        Log.d("video", "Get " + String.valueOf(upvoteCount));
-//        Log.d("video", "Get " + avator);
-        aside.init();
         aside.setAside(upvoteCount > 100000 ? "100000+" : String.valueOf(upvoteCount), avator);
 
         introduction.init();
@@ -136,14 +124,6 @@ public class VideoActivity extends AppCompatActivity {
         public boolean onDoubleTapEvent(MotionEvent e) {
             return super.onDoubleTapEvent(e);
         }
-
-//        @Override
-//        public boolean onSingleTapUp(MotionEvent e) {
-//            Log.d("tap", "Single Tap");
-//            mediaController.show();
-//            return super.onSingleTapUp(e);
-//        }
-
     }
 
     public class Introduction {
@@ -172,7 +152,9 @@ public class VideoActivity extends AppCompatActivity {
         private TextView commentCount;
         private TextView shareCount;
 
+        private ImageView share;
         private ImageView avatorImg;
+        private ImageView downloadImg;
 
         private Context context;
 
@@ -185,7 +167,9 @@ public class VideoActivity extends AppCompatActivity {
             upvoteCount = findViewById(R.id.videoUpvoteCount);
             shareCount = findViewById(R.id.videoShareCount);
             commentCount = findViewById(R.id.videoCommentCount);
+            share = findViewById(R.id.shareIcon);
             avatorImg = findViewById(R.id.avator);
+            downloadImg = findViewById(R.id.downloadIcon);
 
         }
 
