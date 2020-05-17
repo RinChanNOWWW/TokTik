@@ -1,7 +1,6 @@
 package com.rinchannow.toktik;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +61,7 @@ class ViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         topic = itemView.findViewById(R.id.topic);
         upvoteCount = itemView.findViewById(R.id.upvote_count);
-        pictureCover = itemView.findViewById(R.id.avator);
+        pictureCover = itemView.findViewById(R.id.cover);
         description = itemView.findViewById(R.id.description);
     }
 
