@@ -1,15 +1,19 @@
 package com.rinchannow.toktik;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,15 +47,13 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.VideoI
     @Override
     public void onBindViewHolder(@NonNull VideoInfoItemHolder holder, int position) {
         VideoResponse.VideoData data = dataList.get(position);
-        String str =
-                "id: " + data.id + "\n" +
-                        "feed url: " + data.feedUrl + "\n" +
-                        "nickname: " + data.nickname + "\n" +
-                        "description: " + data.description + "\n" +
-                        "like count: " + data.likeCount + "\n" +
-                        "avatar url:" + data.avatarUrl;
+        holder.topic.setText(data.nickname);
+        holder.description.setText(data.description);
+        Log.d("yuanziqi", data.feedUrl);
 
-        holder.text.setText(str);
+        holder.upvoteCount.setText(data.likeCount <= 100000 ? String.valueOf(data.likeCount) : "100000+");
+
+        loadCover(holder.pictureCover, data.feedUrl, holder.itemView.getContext());
     }
 
     @Override
@@ -61,12 +63,19 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.VideoI
 
     public class VideoInfoItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        // TODO 之后需要制作成视频预览，这里只是先用来看效果
-        private TextView text;
+        private TextView topic;
+        private TextView upvoteCount;
+        private ImageView pictureCover;
+        private TextView description;
 
         public VideoInfoItemHolder(@NonNull View itemView) {
             super(itemView);
-            text = itemView.findViewById(R.id.video_info);
+
+            topic = itemView.findViewById(R.id.topic);
+            pictureCover = itemView.findViewById(R.id.avator);
+            upvoteCount = itemView.findViewById(R.id.upvote_count);
+            description = itemView.findViewById(R.id.description);
+
             itemView.setOnClickListener(this);
         }
 
@@ -77,8 +86,15 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.VideoI
                 mOnClickListener.onListItemClick(clickedPosition);
             }
         }
+    }
 
-
+    private static void loadCover(ImageView imageView, String url, Context context) {
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        Glide.with(context).setDefaultRequestOptions(new RequestOptions().frame(4000000)
+                        .centerCrop()
+                        .placeholder(R.drawable.icon_progress_bar)
+                        .error(R.drawable.icon_failure)
+                ).load(url).into(imageView);
     }
 
     public interface ListItemClickListener {
