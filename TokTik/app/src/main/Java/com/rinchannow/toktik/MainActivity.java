@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mListView.setLayoutManager(layoutManager);
         mListView.setHasFixedSize(true);
-        // TODO 美化这个界面
+
         mListView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         try {
             getVideoData();
@@ -77,14 +77,17 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         String topic = videoDataList.get(clickedItemIndex).nickname;
         String description = videoDataList.get(clickedItemIndex).description;
         Integer upvoteCount = videoDataList.get(clickedItemIndex).likeCount;
+        String avator = videoDataList.get(clickedItemIndex).avatarUrl;
         intent.putExtra("feedUrl", url);
         intent.putExtra("upvoteCount", upvoteCount);
         intent.putExtra("topic", topic);
         intent.putExtra("description", description);
+        intent.putExtra("avator", avator);
         Log.d("video", "Send " + url);
         Log.d("video", "Send " + upvoteCount);
         Log.d("video", "Send " + topic);
         Log.d("video", "Send " + description);
+        Log.d("video", "Send " + avator);
 
         startActivity(intent);
     }

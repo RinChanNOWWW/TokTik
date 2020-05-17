@@ -4,10 +4,15 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.rinchannow.toktik.player.VideoPlayerIJK
-        android:id="@+id/ijkPlayer"
+    <com.rinchannow.toktik.animator.Love
+        android:id="@+id/lovelayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+        <com.rinchannow.toktik.player.VideoPlayerIJK
+            android:id="@+id/ijkPlayer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.rinchannow.toktik.animator.Love>
 
     <LinearLayout
         android:id="@+id/description"
