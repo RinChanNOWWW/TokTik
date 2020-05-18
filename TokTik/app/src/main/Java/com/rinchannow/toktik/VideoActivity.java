@@ -1,7 +1,5 @@
 package com.rinchannow.toktik;
 
-
-import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -19,18 +17,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.Request;
+
 import com.bumptech.glide.request.RequestOptions;
 import com.rinchannow.toktik.animator.Love;
 import com.rinchannow.toktik.controller.AndroidMediaController;
 import com.rinchannow.toktik.player.VideoPlayerIJK;
 import com.rinchannow.toktik.player.VideoPlayerListener;
+import com.rinchannow.toktik.service.downloadService;
 
-import org.w3c.dom.Text;
 
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
@@ -43,10 +42,8 @@ public class VideoActivity extends AppCompatActivity {
     private Introduction introduction = new Introduction();
     private Love loveAnimator;
     private GestureDetector myGestureDetector;
-
-
-    // Download video.
     private DownloadManager downloadManager;
+
 
     //    @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -66,6 +63,10 @@ public class VideoActivity extends AppCompatActivity {
         Integer upvoteCount = intent.getIntExtra("upvoteCount", 0);
         String avator = intent.getStringExtra("avator");
 
+        String serviceString = Context.DOWNLOAD_SERVICE;
+
+        downloadManager = (DownloadManager)getBaseContext().getSystemService(serviceString);
+
         aside.init();
         aside.share.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,34 +77,28 @@ public class VideoActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "已复制视频链接到剪贴板", Toast.LENGTH_SHORT).show();
             }
         });
+
         aside.downloadIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String serviceString = Context.DOWNLOAD_SERVICE;
-                downloadManager = (DownloadManager) getBaseContext().getSystemService(serviceString);
-                Uri uri = Uri.parse(url);
-                if (Environment.MEDIA_MOUNTED.equals(Environment
-                        .getExternalStorageState())) {
-                    DownloadManager.Request request = new DownloadManager.Request(uri);
-                    //通知栏的标题
-                    request.setTitle("视频下载");
-                    //显示通知栏的说明
-                    request.setDescription("");
-                    //下载到那个文件夹下，以及命名
-
-                    String downloadPath = topic + ".mp4";
-                    request.setDestinationInExternalPublicDir("Download", downloadPath);
-
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Long reference = downloadManager.enqueue(request);
-                        }
-                    }).start();
-
-                    Toast.makeText(getApplicationContext(), "下载视频 " + Environment.getExternalStorageDirectory().getPath() +
-                            "/Download/" + topic + ".mp4", Toast.LENGTH_SHORT).show();
-                }
+//                Uri uri = Uri.parse(url);
+//                DownloadManager.Request request = new DownloadManager.Request(uri);
+//                //通知栏的标题
+//                request.setTitle("视频下载");
+//                //显示通知栏的说明
+//                request.setDescription("测试的广告") ;
+//                request.setShowRunningNotification(false);//不显示通知栏（若不显示就不需要写上面的内容）
+//                request.setVisibleInDownloadsUi(true ) ;
+//                //下载到那个文件夹下，以及命名
+//                request.setDestinationInExternalPublicDir("Download", topic + ".mp4");
+//                Log.d("Download: ", topic+".mp4");
+//                //下载的唯一标识，可以用这个标识来控制这个下载的任务enqueue（）开始执行这个任务
+//                Long reference = downloadManager.enqueue(request);
+                Intent intent = new Intent(getApplicationContext() ,downloadService.class);
+                intent.putExtra("apk_url", url);
+                intent.putExtra("topic", topic);
+                getApplicationContext().startService(intent);
+                Toast.makeText(getApplicationContext(), "Download Start", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -128,16 +123,6 @@ public class VideoActivity extends AppCompatActivity {
 
         ijkPlayer.start();
     }
-
-    /* Checks if external storage is available for read and write */
-    public boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
-    }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
