@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
-
+    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.rinchannow.toktik"
         minSdkVersion 28
@@ -48,9 +48,12 @@ dependencies {
 
     implementation 'com.github.SheHuan:NiceImageView:1.0.5'
 
+    implementation 'org.xutils:xutils:3.3.36'
+
     implementation 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
     implementation 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.8'
     implementation 'tv.danmaku.ijk.media:ijkplayer-exo:0.8.8'
     implementation 'tv.danmaku.ijk.media:ijkplayer-x86:0.8.8'
+
     implementation 'tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.8'
 }
