@@ -27,12 +27,6 @@ public class downloadService extends Service {
         return null;
     }
 
-//    @Override
-//    public void onCreate() {
-//        super.onCreate();
-//        initAPKDir();// 创建保存路径
-//    }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // 接收Intent传来的参数:
@@ -46,42 +40,6 @@ public class downloadService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-//    private void initAPKDir() {
-//        /**
-//         * 创建路径的时候一定要用[/],不能使用[\],但是创建文件夹加文件的时候可以使用[\].
-//         * [/]符号是Linux系统路径分隔符,而[\]是windows系统路径分隔符 Android内核是Linux.
-//         */
-//        if (isHasSdcard())// 判断是否插入SD卡
-//        {
-//            Log.d("InitAPKDir", "hasSdcard");
-//            APK_dir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download/"; // 保存到SD卡路径下
-//            Log.d("InitAPKDir", APK_dir);
-//        } else {
-//            APK_dir = getApplicationContext().getFilesDir().getAbsolutePath() + "/Download/"; // 保存到app的包名路径下
-//        }
-//        File destDir = new File(APK_dir);
-//        if (!destDir.exists()) {// 判断文件夹是否存在
-//            Log.d("InitAPKDir", "make new dir");
-//            destDir.mkdirs();
-//        }
-//    }
-//
-//    /**
-//     * @Description 判断是否插入SD卡
-//     */
-//    private boolean isHasSdcard() {
-//        String status = Environment.getExternalStorageState();
-//        if (status.equals(Environment.MEDIA_MOUNTED)) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-
-    /**
-     * @param file_url    下载链接
-     * @param target_name 保存路径
-     */
     private void DownFile(String file_url, String target_name) {
         //下载任务
         //直接使用系统的下载管理器。是不是非常方便
